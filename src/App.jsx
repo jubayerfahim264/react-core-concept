@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css"; // Assuming you have some styles in App.css
 function App() {
   // This is the main component of the application
@@ -27,6 +27,13 @@ function App() {
   return (
     <>
       <div>
+        <div>
+          <Count></Count>
+        </div>
+        {/* Count */}
+        <div>
+          <User></User>
+        </div>
         <div>
           <h2 style={{ textAlign: "center", color: "blue" }}> Products List</h2>
 
@@ -59,6 +66,7 @@ function App() {
             );
           })}
         </div>
+        {/* Week list */}
       </div>
     </>
   );
@@ -130,6 +138,44 @@ function Weekday(props) {
     <div className="Weekday" style={style}>
       <h2>Day:{props.day}</h2>
       <p>Number:{props.number}</p>
+    </div>
+  );
+}
+
+function Count() {
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <>
+      <h4>Digit:{count}</h4>
+      <button onClick={() => setCount(count + 1)}>Add Digit</button>
+      <button onClick={() => setCount(count - 1)}>Minus Digit</button>
+    </>
+  );
+}
+
+function User() {
+  const [user, setUser] = React.useState([]);
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((data) => {
+        setUser(data);
+      })
+      .catch((error) => console.error("Error fetching user:", error));
+  });
+  return (
+    <div>
+      <h2>Dynamic User:{user.length}</h2>
+      <ul>
+        {user.map((user) => {
+          return (
+            <li key={user.id}>
+              {user.name} - {user.email}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
