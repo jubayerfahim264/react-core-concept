@@ -1,183 +1,131 @@
-import React, { useEffect } from "react";
-import "./App.css"; // Assuming you have some styles in App.css
-function App() {
-  // This is the main component of the application
-  const person = [
-    { name: "Jubayer", age: "23", job: "Student" },
-    { name: "Jhankar", age: "35", job: "Software Engineer" },
-    { name: "Simanth", age: "28", job: "Web Developer" },
-  ];
-  const weekdays = [
-    { day: "Sunday", number: 1 },
-    { day: "Monday", number: 2 },
-    { day: "Tuesday", number: 3 },
-    { day: "Wednesday", number: 4 },
-    { day: "Thursday", number: 5 },
-    { day: "Friday", number: 6 },
-    { day: "Saturday", number: 7 },
-  ];
-  const product = [
-    { name: "Laptop", price: "$1000" },
-    { name: "Smartphone", price: "$400" },
-    { name: "Shoes", price: "$100" },
-    { name: "Bag", price: "$50" },
-    { name: "Camera", price: "$150" },
-  ];
-
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  CardText,
+  Col,
+  Container,
+  ListGroup,
+  ListGroupItem,
+  Row,
+} from "reactstrap";
+const App = () => {
   return (
-    <>
-      <div>
-        <div>
-          <Count></Count>
-        </div>
-        {/* Count */}
-        <div>
-          <User></User>
-        </div>
-        <div>
-          <h2 style={{ textAlign: "center", color: "blue" }}> Products List</h2>
-
-          {product.map((pd) => {
-            return (
-              <Product name={pd.name} price={pd.price} key={pd.name}></Product>
-            );
-          })}
-        </div>
-        {/* Product List Practice */}
-        <div>
-          <h2 style={{ textAlign: "center", color: "blue" }}>Person List</h2>
-          {person.map((person) => {
-            return (
-              <Person
-                name={person.name}
-                age={person.age}
-                job={person.job}
-                key={person.name}
-              ></Person>
-            );
-          })}
-        </div>
-        {/* Person List Practice */}
-        <div>
-          <h2 style={{ textAlign: "center", color: "blue" }}>Weekdays List</h2>
-          {weekdays.map((day) => {
-            return (
-              <Weekday day={day.day} number={day.number} key={day.number} />
-            );
-          })}
-        </div>
-        {/* Week list */}
-      </div>
-    </>
-  );
-}
-
-function Person(props) {
-  const style = {
-    backgroundColor: "dodgerblue",
-    padding: "10px",
-    borderRadius: "5px",
-    textAlign: "center",
-    margin: "10px",
-    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-    transition: "transform 0.2s",
-    cursor: "pointer",
-    color: "white",
-    fontFamily: "Arial, sans-serif",
-    fontSize: "1.2em",
-    border: "1px solid red",
-  };
-  return (
-    <div className="Person" style={style}>
-      <h2>Name:{props.name}</h2>
-      <p>Age:{props.age}</p>
-      <p>Occupation:{props.job}</p>
+    <div style={{ margin: 0, padding: 0, boxSizing: "border-box" }}>
+      <User />
+      {/* ====User Component=== */}
+      <Post />
+      {/* ====Post Component=== */}
+      <Comments />
+      {/* ====Comments Component=== */}
     </div>
   );
-}
-function Product(props) {
-  const style = {
-    backgroundColor: "lightgreen",
-    padding: "10px",
-    borderRadius: "5px",
-    textAlign: "center",
-    margin: "10px",
-    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-    transition: "transform 0.2s",
-    cursor: "pointer",
-    color: "black",
-    fontFamily: "Arial, sans-serif",
-    fontSize: "1.2em",
-    border: "1px solid green",
-    color: "navyblue",
-  };
-  return (
-    <div className="Product" style={style}>
-      <h2>Name:{props.name}</h2>
-      <p>Price:{props.price}</p>
-    </div>
-  );
-}
+};
 
-function Weekday(props) {
-  const style = {
-    backgroundColor: "lightcoral",
-    padding: "10px",
-    borderRadius: "5px",
-    textAlign: "center",
-    margin: "10px",
-    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-    transition: "transform 0.2s",
-    cursor: "pointer",
-    color: "white",
-    fontFamily: "Arial, sans-serif",
-    fontSize: "1.2em",
-    border: "1px solid red",
-  };
-  return (
-    <div className="Weekday" style={style}>
-      <h2>Day:{props.day}</h2>
-      <p>Number:{props.number}</p>
-    </div>
-  );
-}
+const User = () => {
+  const [user, setUser] = useState([]);
 
-function Count() {
-  const [count, setCount] = React.useState(0);
-
-  return (
-    <>
-      <h4>Digit:{count}</h4>
-      <button onClick={() => setCount(count + 1)}>Add Digit</button>
-      <button onClick={() => setCount(count - 1)}>Minus Digit</button>
-    </>
-  );
-}
-
-function User() {
-  const [user, setUser] = React.useState([]);
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
-      .then((res) => res.json())
-      .then((data) => {
-        setUser(data);
-      })
-      .catch((error) => console.error("Error fetching user:", error));
+      .then((response) => response.json())
+      .then((data) => setUser(data));
   });
+  const userList = user.slice(0, 9); // Limiting to 9 users for better UI
   return (
-    <div>
-      <h2>Dynamic User:{user.length}</h2>
-      <ul>
-        {user.map((user) => {
+    <div className="container">
+      <h2>User Component</h2>
+      <Row>
+        {userList.map((user) => {
           return (
-            <li key={user.id}>
-              {user.name} - {user.email}
-            </li>
+            <Col key={user.id} xs="12" sm="6" md="4" lg="4">
+              <Card className="mb-4">
+                <CardBody>
+                  <CardHeader tag={"h5"}>{user.name}</CardHeader>
+                  <ListGroup flush>
+                    <ListGroupItem>
+                      <strong>Email:</strong> {user.email}
+                    </ListGroupItem>
+                    <ListGroupItem>
+                      <strong>Phone:</strong> {user.phone}
+                    </ListGroupItem>
+                    <ListGroupItem>
+                      <strong>Website:</strong> {user.website}
+                    </ListGroupItem>
+                  </ListGroup>
+                </CardBody>
+              </Card>
+            </Col>
           );
         })}
-      </ul>
+      </Row>
     </div>
   );
-}
+};
+// User component fetches user data from an API and displays it in a card format
+const Post = () => {
+  const [post, setPost] = useState([]);
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/posts")
+      .then((response) => response.json())
+      .then((data) => setPost(data));
+  });
+  const postList = post.slice(0, 8); // Limiting to 8 posts for better UI
+  return (
+    <div className="container">
+      <h2>Post Component</h2>
+      <Row className="row container">
+        {postList.map((post) => {
+          return (
+            <Col key={post.id} xs="12" sm="6" md="4" lg="4">
+              <Card className="mb-4">
+                <CardBody>
+                  <CardHeader tag={"h6"}>{post.title}</CardHeader>
+                  <CardText tag={"p"} style={{ color: "gray" }}>
+                    {post.body}
+                  </CardText>
+                </CardBody>
+              </Card>
+            </Col>
+          );
+        })}
+      </Row>
+    </div>
+  );
+};
+
+const Comments = () => {
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/comments")
+      .then((response) => response.json())
+      .then((data) => setComments(data));
+  }, []);
+
+  const commentsList = comments.slice(0, 10);
+
+  return (
+    <div className="container">
+      <h2>Comments Component</h2>
+      <Row>
+        {commentsList.map((comment) => {
+          return (
+            <Col key={comment.id} xs="12" sm="6" md="4" lg="4">
+              <Card className="mb-4">
+                <CardBody>
+                  <CardHeader tag={"h5"}>{comment.email}</CardHeader>
+                  <CardText tag={"p"} style={{ color: "gray" }}>
+                    {comment.body}
+                  </CardText>
+                </CardBody>
+              </Card>
+            </Col>
+          );
+        })}
+      </Row>
+    </div>
+  );
+};
 
 export default App;
