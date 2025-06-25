@@ -5,14 +5,22 @@ import {
   CardHeader,
   CardText,
   Col,
-  Container,
   ListGroup,
   ListGroupItem,
   Row,
 } from "reactstrap";
 const App = () => {
+  const personName = [
+    { name: "John Doe", job: "Software Engineer" },
+    { name: "Jane Smith", job: "Data Scientist" },
+    { name: "Alice Johnson", job: "Product Manager" },
+  ];
   return (
     <div style={{ margin: 0, padding: 0, boxSizing: "border-box" }}>
+      <Person name={personName[0].name} job={personName[0].job} />
+      <Person name={personName[1].name} job={personName[1].job} />
+      <Person name={personName[2].name} job={personName[2].job} />
+      {/* ====Person Component=== */}
       <User />
       {/* ====User Component=== */}
       <Post />
@@ -38,11 +46,14 @@ const User = () => {
       <Row>
         {userList.map((user) => {
           return (
-            <Col key={user.id} xs="12" sm="6" md="4" lg="4">
-              <Card className="mb-4">
+            <Col key={user.id} xs="12" sm="6" md="3" lg="3">
+              <Card
+                className="mb-4"
+                style={{ backgroundColor: "dodgerblue", color: "white" }}
+              >
                 <CardBody>
                   <CardHeader tag={"h5"}>{user.name}</CardHeader>
-                  <ListGroup flush>
+                  <ListGroup flush style={{ borderRadius: 4 }}>
                     <ListGroupItem>
                       <strong>Email:</strong> {user.email}
                     </ListGroupItem>
@@ -78,10 +89,12 @@ const Post = () => {
         {postList.map((post) => {
           return (
             <Col key={post.id} xs="12" sm="6" md="4" lg="4">
-              <Card className="mb-4">
+              <Card className="mb-4" style={{ backgroundColor: "#0C2D48" }}>
                 <CardBody>
-                  <CardHeader tag={"h6"}>{post.title}</CardHeader>
-                  <CardText tag={"p"} style={{ color: "gray" }}>
+                  <CardHeader tag={"h6"} style={{ color: "white" }}>
+                    {post.title}
+                  </CardHeader>
+                  <CardText tag={"p"} style={{ color: "#D4F1F4" }}>
                     {post.body}
                   </CardText>
                 </CardBody>
@@ -112,10 +125,12 @@ const Comments = () => {
         {commentsList.map((comment) => {
           return (
             <Col key={comment.id} xs="12" sm="6" md="4" lg="4">
-              <Card className="mb-4">
+              <Card className="mb-4" style={{ backgroundColor: "#189AB4" }}>
                 <CardBody>
-                  <CardHeader tag={"h5"}>{comment.email}</CardHeader>
-                  <CardText tag={"p"} style={{ color: "gray" }}>
+                  <CardHeader tag={"h5"} style={{ color: "white" }}>
+                    {comment.email}
+                  </CardHeader>
+                  <CardText tag={"p"} style={{ color: "#D4F1F4" }}>
                     {comment.body}
                   </CardText>
                 </CardBody>
@@ -127,5 +142,27 @@ const Comments = () => {
     </div>
   );
 };
+// Comments Component
 
+// Below the example of props management in React
+const Person = ({ name, job }) => {
+  return (
+    <div className="container">
+      <Row>
+        <Col xs="12" sm="6" md="4" lg="4">
+          <Card className="mb-4" style={{ backgroundColor: "#0C2D48" }}>
+            <CardBody>
+              <CardHeader tag={"h5"} style={{ color: "white" }}>
+                {name}
+              </CardHeader>
+              <CardText tag={"p"} style={{ color: "#D4F1F4" }}>
+                {job}
+              </CardText>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+    </div>
+  );
+};
 export default App;
